@@ -5,9 +5,9 @@
   "description": "A Probot app",
   "author": "zhang-alvin <alv.zhang@gmail.com>",
   "license": "ISC",
-  "repository": "https://github.com/zhang-alvin/my-first-app.git",
-  "homepage": "https://github.com/zhang-alvin/my-first-app",
-  "bugs": "https://github.com/zhang-alvin/my-first-app/issues",
+  "repository": "https://github.com/zhang-alvin/sizeCheck.git",
+  "homepage": "https://github.com/zhang-alvin/sizeCheck",
+  "bugs": "https://github.com/zhang-alvin/sizeCheck/issues",
   "keywords": [
     "probot",
     "github",
