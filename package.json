@@ -21,6 +21,7 @@
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
   "dependencies": {
+    "async-waterfall": "^0.1.5",
     "probot": "^9.5.3"
   },
   "devDependencies": {
