@@ -129,36 +129,26 @@ function needDeleteFile(dest){
 //from https://www.devdungeon.com/content/working-files-javascript-nodejs
 async function downloadFiles(url,dest){
     needDeleteFile(dest);
+    console.log(url)
     let download = wget.download(url, dest);
-    console.log(download)
+    console.log("HERE?")
     await once(download,'end')
+    console.log("finsihed?")
 }
 
 function getFilesizeInBytes(filename) {
-    console.log("Here")
     var stats = fs.statSync(filename)
-    console.log("THere")
     var fileSizeInBytes = stats["size"]
     return fileSizeInBytes
 }
 
-function getSizes(fileURLs){
+async function getSizes(fileURLs){
     var url
     var totalSize = 0
     for(url of fileURLs)
     {
-/*
-        downloadFiles(url).then(
-            totalSize+= getFilesizeInBytes('dummy'),
-            console.log("total size is? "),
-            console.log(totalSize),
-        )
-*/
-        console.log("Fish")
-        let download = downloadFiles(url,'./dummy')
-        download.then(console.log("Papapya"))
+        let download = await downloadFiles(url,'./dummy')
         totalSize+= getFilesizeInBytes('dummy')
-        console.log(totalSize)
     }
     return totalSize
 }
@@ -187,7 +177,7 @@ module.exports = app => {
     console.log(fileURLs)
 
     console.log("finished files");
-    totalSize=getSizes(fileURLs);
+    totalSize=await getSizes(fileURLs);
     console.log(totalSize);
     console.log("finished download");
 
