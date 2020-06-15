@@ -92,17 +92,17 @@ module.exports = app => {
     });
 
     [fileURLs,fileNames,blobSHAs]=getFileNames(check);
-    console.log(blobSHAs)
+    //console.log(blobSHAs)
      
     var blobSizes=[]
     for(sha of blobSHAs)
     {
         blob = await context.github.git.getBlob({owner,repo,file_sha: sha});
-        console.log(blob)
         blobSizes.push(blob.size)
     }
 
 
+    console.log(blobSizes)
     var fileDict = {};
     var pass=1;
     var failArray= [];
@@ -125,6 +125,7 @@ module.exports = app => {
     var zip = (a,b) => a.map((x,i) => [x,b[i]]);
     for( let [name,sizeBlob] of zip(fileNames,blobSizes))
     {
+        console.log(sizeBlob)
         if(sizeBlob > config.thresholdSize)
         {
             pass=0;
