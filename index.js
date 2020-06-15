@@ -30,7 +30,7 @@ function getFileNames(check){
             blobSizes.push(files.size)
         }
     }
-    return [fileURLs,fileNames]
+    return [fileURLs,fileNames,blobSizes]
 }
 
 function needDeleteFile(dest){
