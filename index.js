@@ -117,7 +117,7 @@ module.exports = app => {
     //Need a function that outputs failArray/pass using blobSizes output
     for( let [name,sizeBlob] of zip(fileNames,blobSizes))
     {
-        if(sizeBlob) > config.thresholdSize)
+        if(sizeBlob > config.thresholdSize)
         {
             pass=0;
             failArray.push(name+':    '+sizeBlob+'kB');
