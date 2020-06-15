@@ -18,7 +18,7 @@ function getFileNames(check){
     var files
     var fileURLs=[]
     var fileNames=[]
-    var blobSizes=[]
+    var blobSHAs=[]
 
     console.log(typeof check.data)
     for(files of check.data)
@@ -27,10 +27,10 @@ function getFileNames(check){
         {
             fileURLs.push(files.raw_url)
             fileNames.push(files.filename)
-            blobSizes.push(files.size)
+            blobSHAs.push(files.sha)
         }
     }
-    return [fileURLs,fileNames,blobSizes]
+    return [fileURLs,fileNames,blobSHAs]
 }
 
 function needDeleteFile(dest){
@@ -91,8 +91,16 @@ module.exports = app => {
         owner,repo,pull_number,
     });
 
-    [fileURLs,fileNames,blobSizes]=getFileNames(check);
-    console.log(blobSizes)
+    [fileURLs,fileNames,blobSHAs]=getFileNames(check);
+    console.log(blobSHAs)
+     
+    var blobSizes=[]
+    for(sha of blobSHAs)
+    {
+        blob = await context.git.getBlob({owner,repo,sha});
+        blobSizes.push(blob.size)
+    }
+
 
     var fileDict = {};
     var pass=1;
