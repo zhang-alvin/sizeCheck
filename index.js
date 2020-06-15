@@ -85,7 +85,7 @@ module.exports = app => {
   })
 */
 
-  app.on(['pull_request.reopened','pull_request.opened','pull_request.edited'], async context => {
+  app.on(['pull_request.reopened','pull_request.opened','pull_request.edited','pull_request.synchronize'], async context => {
     const timeStart = new Date()
 
     //configuration file with default threshold file size in kB
