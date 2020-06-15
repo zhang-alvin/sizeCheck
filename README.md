@@ -5,6 +5,7 @@
 Committing an unnecessarily large file in a git repository and pushing to the remote or merging with master is a costly mistake, which would require significant effort to fix.
 
 This can be an especially common problem in projects without a mature development culture or in projects with inexperienced developers.
+Reviewers are also fallable and can allow such files to slip through the cracks.
 
 This app allows you to set a size threshold for the files added into the repository through a pull request.
 The app initializes a check that compares the added files' on-disk size against the threshold. 
