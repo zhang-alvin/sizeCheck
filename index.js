@@ -66,6 +66,8 @@ async function getSizes(fileURLs,fileNames,fileDict){
         fileDict[name] = fileSize/1024.0
         totalSize+=fileSize
     }
+    //removes last dummy
+    needDeleteFile('./dummy')
     return totalSize
 }
 
