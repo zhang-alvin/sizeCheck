@@ -10,10 +10,6 @@ const wget = require('wget-improved');
 const {once, EventEmitter} = require('events')
 
 const ConfigFilename = 'sizeCheck.yml'
-interface AppConfig {
-  thresholdSize: float;
-}
-const DefaultConfig: AppConfig = { thresholdSize: 100 };
 
 function getFileNames(check){
 
@@ -91,7 +87,7 @@ module.exports = app => {
     const timeStart = new Date()
 
     //configuration file with default threshold file size in kB
-    const config = await context.config(ConfigFilename, DefaultConfig)
+    const config = await context.config(ConfigFilename, {thresholdSize: 100})
 
     const owner = context.payload.repository.owner.login
     const repo = context.payload.repository.name
