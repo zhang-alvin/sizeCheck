@@ -98,6 +98,7 @@ module.exports = app => {
     for(sha of blobSHAs)
     {
         blob = await context.github.git.getBlob({owner,repo,file_sha: sha});
+        console.log(blob)
         blobSizes.push(blob.size)
     }
 
