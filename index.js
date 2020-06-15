@@ -11,6 +11,9 @@ const {once, EventEmitter} = require('events')
 
 const ConfigFilename = 'sizeCheck.yml'
 
+//useful function
+var zip = (a,b) => a.map((x,i) => [x,b[i]]);
+
 function getFileNames(check){
 
     //store all files in a structure that can be looped through
@@ -18,6 +21,7 @@ function getFileNames(check){
     var files
     var fileURLs=[]
     var fileNames=[]
+    var blobSizes=[]
 
     console.log(typeof check.data)
     for(files of check.data)
@@ -26,6 +30,7 @@ function getFileNames(check){
         {
             fileURLs.push(files.raw_url)
             fileNames.push(files.filename)
+            blobSizes.push(files.size)
         }
     }
     return [fileURLs,fileNames]
@@ -58,9 +63,7 @@ function getFilesizeInBytes(filename) {
 async function getSizes(fileURLs,fileNames,fileDict){
     var url
     var totalSize = 0
-    var zip = (a,b) => a.map((x,i) => [x,b[i]]);
     for (let [url, name] of zip(fileURLs, fileNames))
-    //for(url of fileURLs)
     {
         let download = await downloadFiles(url,'./dummy')
         let fileSize= getFilesizeInBytes('dummy')
@@ -74,16 +77,6 @@ async function getSizes(fileURLs,fileNames,fileDict){
 }
 
 module.exports = app => {
-
-  // Your code here
-  app.log('Yay, the app was loaded!')
-
-/*
-  app.on('issues.opened', async context => {
-    const issueComment = context.issue({ body: 'Thanks for opening this issue!' })
-    return context.github.issues.createComment(issueComment)
-  })
-*/
 
   app.on(['pull_request.reopened','pull_request.opened','pull_request.edited','pull_request.synchronize'], async context => {
     const timeStart = new Date()
@@ -100,23 +93,34 @@ module.exports = app => {
         owner,repo,pull_number,
     });
 
-    [fileURLs,fileNames]=getFileNames(check);
-    console.log(fileURLs)
+    [fileURLs,fileNames,blobSizes]=getFileNames(check);
+    console.log(blobSizes)
 
-    //create dictionary to pass into function
     var fileDict = {};
-
-    //get sizes
-    totalSize=await getSizes(fileURLs,fileNames,fileDict);
-
     var pass=1;
     var failArray= [];
+
+    //get sizes; create dictionary to pass into function
+    /*
+    totalSize=await getSizes(fileURLs,fileNames,fileDict);
+
     for(var key in fileDict)
     {
         if(fileDict[key] > config.thresholdSize)
         {
             pass=0;
             failArray.push(key+':    '+fileDict[key]+'kB');
+        }
+    }
+    */
+
+    //Need a function that outputs failArray/pass using blobSizes output
+    for( let [name,sizeBlob] of zip(fileNames,blobSizes))
+    {
+        if(sizeBlob) > config.thresholdSize)
+        {
+            pass=0;
+            failArray.push(name+':    '+sizeBlob+'kB');
         }
     }
 
@@ -162,27 +166,6 @@ module.exports = app => {
         }))
     }
 
-/*
-    newCheck.then(
-        context.github.checks.update({
-        owner,
-        repo,
-        conclusion: 'success',
-        completed_at: newDate(),
-        output:{
-            title: fileURLs[0],
-            summary: 'tested',
-        }
-        })
-    )
-*/
-
-/*
-    if(context.payload.sender.login != 'sizecheck[bot]'){
-        const issueComment = context.issue({ body: 'Apparent size is '+ totalSize/1024.0 + 'kB'})
-        return context.github.issues.createComment(issueComment)
-    }
-*/
   })
 
   // For more information on building apps:
