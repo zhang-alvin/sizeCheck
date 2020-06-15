@@ -97,7 +97,7 @@ module.exports = app => {
     var blobSizes=[]
     for(sha of blobSHAs)
     {
-        blob = await context.git.getBlob({owner,repo,sha});
+        blob = await context.github.git.getBlob({owner,repo,sha});
         blobSizes.push(blob.size)
     }
 
