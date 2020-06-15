@@ -11,9 +11,6 @@ const {once, EventEmitter} = require('events')
 
 const ConfigFilename = 'sizeCheck.yml'
 
-//useful function
-var zip = (a,b) => a.map((x,i) => [x,b[i]]);
-
 function getFileNames(check){
 
     //store all files in a structure that can be looped through
@@ -63,6 +60,7 @@ function getFilesizeInBytes(filename) {
 async function getSizes(fileURLs,fileNames,fileDict){
     var url
     var totalSize = 0
+    var zip = (a,b) => a.map((x,i) => [x,b[i]]);
     for (let [url, name] of zip(fileURLs, fileNames))
     {
         let download = await downloadFiles(url,'./dummy')
@@ -115,6 +113,7 @@ module.exports = app => {
     */
 
     //Need a function that outputs failArray/pass using blobSizes output
+    var zip = (a,b) => a.map((x,i) => [x,b[i]]);
     for( let [name,sizeBlob] of zip(fileNames,blobSizes))
     {
         if(sizeBlob > config.thresholdSize)
